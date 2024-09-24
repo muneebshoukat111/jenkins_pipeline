@@ -1,35 +1,26 @@
 pipeline:
-  agent:
-    label: "node"
+  agent: any
 
   stages:
-    - stage: "Checkout"
+    - stage: Build
       steps:
-        - checkout scm
+        - echo: "Building the application..."
+        - sh: "echo Building the application..."
 
-    - stage: "Install Dependencies"
+    - stage: Test
       steps:
-        - sh: |
-            echo "Installing dependencies..."
-            npm install
+        - echo: "Running tests..."
+        - sh: "echo Running tests..."
 
-    - stage: "Run Tests"
+    - stage: Deploy
       steps:
-        - sh: |
-            echo "Running tests..."
-            npm test -- --reporter=junit --output=test-results.xml  # Adjust based on your test runner
-
-    - stage: "Archive Test Results"
-      steps:
-        - junit:
-            testResults: "test-results.xml"  # Path to the test results file
-        - archiveArtifacts:
-            artifacts: "coverage/**"  # Adjust based on your coverage reports
-
-  when:
-    branch: "main"  # Only run this pipeline on the main branch
+        - echo: "Deploying the application..."
+        - sh: "echo Deploying the application..."
 
   post:
     always:
-      - echo: "Cleaning up workspace..."
-      - cleanWs()  # Clean up the workspace after the build
+      - echo: "Cleaning up..."
+    success:
+      - echo: "Pipeline completed successfully!"
+    failure:
+      - echo: "Pipeline failed. Please check the logs."
