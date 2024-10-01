@@ -1,24 +1,11 @@
-pipeline {
-    agent {
-        docker { image 'node' }
-    }
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building ..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing ..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying ..'
-            }
-        }
-    }
-
-
-}
+pipeline:
+  agent:
+    docker:
+      image: "docker:latest"
+      args: "--privileged"  # Needed for Docker-in-Docker if applicable
+  stages:
+    - stage: "Build Docker Image"
+      steps:
+        - script: |
+            # Build the Docker image
+            docker build -t your-image-name:latest .
