@@ -2,7 +2,7 @@ pipeline:
   agent:
     docker:
       image: "docker:latest"
-      args: "--privileged"  # Needed for Docker-in-Docker if applicable
+      args: "--privileged" 
   stages:
     - stage: "Build Docker Image"
       steps:
