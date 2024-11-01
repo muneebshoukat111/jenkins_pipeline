@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "muneebshoukat/test" // DockerHub repository name
         IMAGE_TAG = "0.1.${BUILD_NUMBER}" // Incremented tag with each build
-        DOCKER_CREDENTIALS_ID = "dockerhub" // Jenkins credentials ID for DockerHub
+        DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f" // Updated with the correct credentials ID
     }
 
     stages {
