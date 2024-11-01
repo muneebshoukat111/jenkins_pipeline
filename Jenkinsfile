@@ -1,20 +1,31 @@
 pipeline {
     agent any
+    
+    environment {
+        IMAGE_NAME = "test"
+        IMAGE_TAG = "0.1.${BUILD_NUMBER}" // This will increment the tag with each new build
+    }
+
     stages {
-        stage('Test') {
+        stage('Clone Repository') {
             steps {
-                script {
-                    echo 'Hello, Jenkins!'
-                }
+                git 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo 'Building Docker image...'
-                    sh 'docker build -t your-image-name:latest .'
+                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            // Clean up the workspace
+            deleteDir()
         }
     }
 }
