@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                // Clone only the 'test' branch
+               
                 git branch: 'test', url: 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
             }
         }
