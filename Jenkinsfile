@@ -1,10 +1,12 @@
 pipeline {
     agent any
-    
+
     environment {
-        IMAGE_NAME = "muneebshoukat/test" // DockerHub repository name
-        IMAGE_TAG = "0.1.${BUILD_NUMBER}" // Incremented tag with each build
-        DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f" // DockerHub credentials ID
+        IMAGE_NAME = "muneebshoukat/test"
+        IMAGE_TAG = "0.1.${BUILD_NUMBER}"
+        DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
+        DOCKER_USERNAME = credentials('docker-username') // Your DockerHub username stored in Jenkins credentials
+        DOCKER_PASSWORD = credentials('docker-password') // Your DockerHub password stored in Jenkins credentials
     }
 
     stages {
@@ -23,12 +25,20 @@ pipeline {
             }
         }
 
+        stage('Remove Old Latest Tag') {
+            steps {
+                script {
+                    sh """
+                        curl -X DELETE -u ${DOCKER_USERNAME}:${DOCKER_PASSWORD} "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/latest/"
+                    """
+                }
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Login to DockerHub using Jenkins credentials
                     docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        // Push the Docker image
                         docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
                         docker.image("${IMAGE_NAME}:latest").push()
                     }
@@ -39,7 +49,6 @@ pipeline {
         stage('Cleanup Docker Image') {
             steps {
                 script {
-                    // Remove the local Docker image after pushing to DockerHub
                     sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
                     sh "docker rmi ${IMAGE_NAME}:latest"
                 }
@@ -49,7 +58,6 @@ pipeline {
 
     post {
         always {
-            // Clean up the workspace
             deleteDir()
         }
     }
