@@ -8,7 +8,6 @@ pipeline {
         NAMESPACE = 'muneeb'
         HELM_CHART_PATH = './chart/muneeb'
         KUBECONFIG = "/home/muneeb/.kube/config" // Ensure Minikube KUBECONFIG path is set
-        KUBECONFIG = "/home/muneeb/.kube/config"
         K8S_TOKEN = credentials('jenkins-k8s-token')
     }
 
