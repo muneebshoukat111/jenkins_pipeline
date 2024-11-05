@@ -70,7 +70,9 @@ pipeline {
 
     post {
         always {
-            cleanWs() // Replaces deleteDir() with cleanWs(), which doesn’t require a node context
+            node {
+                cleanWs() // Wrap cleanWs() in a node context
+            }
         }
     }
 }
