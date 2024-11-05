@@ -5,8 +5,8 @@ pipeline {
         IMAGE_NAME = "muneebshoukat/test"
         IMAGE_TAG = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        DOCKER_USERNAME = credentials('docker-username') // Your DockerHub username stored in Jenkins credentials
-        DOCKER_PASSWORD = credentials('docker-password') // Your DockerHub password stored in Jenkins credentials
+        DOCKER_USERNAME = credentials('docker-username') // DockerHub username stored in Jenkins credentials
+        DOCKER_PASSWORD = credentials('docker-password') // DockerHub password stored in Jenkins credentials
     }
 
     stages {
@@ -58,7 +58,9 @@ pipeline {
 
     post {
         always {
-            deleteDir()
+            node {
+                deleteDir()
+            }
         }
     }
 }
