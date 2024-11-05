@@ -7,9 +7,19 @@ pipeline {
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
         NAMESPACE = 'muneeb'
         HELM_CHART_PATH = './chart/muneeb'
+        KUBECONFIG = "/home/muneeb/.kube/config" // Ensure Minikube KUBECONFIG path is set
     }
 
     stages {
+        stage('Start Minikube') {
+            steps {
+                script {
+                    // Start Minikube if it’s not already running
+                    sh 'minikube start --driver=docker || echo "Minikube is already running"'
+                }
+            }
+        }
+
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
@@ -39,8 +49,8 @@ pipeline {
         stage('Cleanup Docker Image') {
             steps {
                 script {
-                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker rmi ${IMAGE_NAME}:latest"
+                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
+                    sh "docker rmi ${IMAGE_NAME}:latest || true"
                 }
             }
         }
@@ -48,6 +58,9 @@ pipeline {
         stage('Deploy to Local Kubernetes') {
             steps {
                 script {
+                    // Set KUBECONFIG environment variable explicitly if needed
+                    env.KUBECONFIG = '/home/muneeb/.kube/config'
+                    
                     // Ensure namespace exists
                     sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -"
 
