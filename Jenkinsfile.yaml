@@ -1,6 +1,5 @@
 pipeline:
-  agent:
-    any
+  agent: any
 
   environment:
     IMAGE_NAME: "muneebshoukat/test"
@@ -16,8 +15,7 @@ pipeline:
 
     - stage: Build Docker Image
       steps:
-        - script: |
-            docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
+        - script: 'docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")'
 
     - stage: Push Docker Image
       steps:
@@ -28,8 +26,7 @@ pipeline:
 
     - stage: Cleanup Docker Image
       steps:
-        - script: |
-            sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+        - script: 'sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"'
 
   post:
     always:
