@@ -5,14 +5,14 @@ pipeline {
         IMAGE_NAME = "muneebshoukat/test"
         IMAGE_TAG = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        NAMESPACE = 'muneeb' // Target namespace in Kubernetes
-        HELM_CHART_PATH = './' // Path to your Helm chart
+        NAMESPACE = 'muneeb'
+        HELM_CHART_PATH = './chart/muneeb'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'test', url: 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
+                git branch: 'main', url: 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
             }
         }
 
@@ -49,7 +49,7 @@ pipeline {
             steps {
                 script {
                     // Ensure namespace exists
-                    // sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -"
+                    sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -"
 
                     // Deploy the Helm chart with the image tag as a value override
                     sh """
