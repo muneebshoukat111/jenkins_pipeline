@@ -13,14 +13,14 @@ pipeline {
     }
 
     stages {
-        stage('Start Minikube') {
-            steps {
-                script {
-                    // Start Minikube if it’s not already running
-                    sh 'minikube start --driver=docker || echo "Minikube is already running"'
-                }
-            }
-        }
+        // stage('Start Minikube') {
+        //     steps {
+        //         script {
+        //             // Start Minikube if it’s not already running
+        //             sh 'minikube start --driver=docker || echo "Minikube is already running"'
+        //         }
+        //     }
+        // }
 
         stage('Clone Repository') {
             steps {
@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     // Set KUBECONFIG environment variable explicitly if needed
-                    env.KUBECONFIG = '/home/muneeb/.kube/config'
+                   
                     
                     // Ensure namespace exists
                     sh "kubectl config set-credentials jenkins-user --token=${K8S_TOKEN}"
