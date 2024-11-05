@@ -5,8 +5,6 @@ pipeline {
         IMAGE_NAME = "muneebshoukat/test"
         IMAGE_TAG = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        DOCKER_USERNAME = credentials('docker-username') // DockerHub username stored in Jenkins credentials
-        DOCKER_PASSWORD = credentials('docker-password') // DockerHub password stored in Jenkins credentials
     }
 
     stages {
@@ -21,16 +19,6 @@ pipeline {
                 script {
                     docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
                     docker.build("${IMAGE_NAME}:latest", ".")
-                }
-            }
-        }
-
-        stage('Remove Old Latest Tag') {
-            steps {
-                script {
-                    sh """
-                        curl -X DELETE -u ${DOCKER_USERNAME}:${DOCKER_PASSWORD} "https://hub.docker.com/v2/repositories/${IMAGE_NAME}/tags/latest/"
-                    """
                 }
             }
         }
@@ -58,7 +46,9 @@ pipeline {
 
     post {
         always {
-            deleteDir()
+            node {
+                deleteDir()
+            }
         }
     }
 }
