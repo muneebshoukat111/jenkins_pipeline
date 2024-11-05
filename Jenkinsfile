@@ -40,7 +40,7 @@ pipeline {
                 script {
                     // Remove the local Docker image after pushing to DockerHub
                     sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
-                    sh "docker rmi ${IMAGE_NAME}:latest
+                    sh "docker rmi ${IMAGE_NAME}:latest"
                 }
             }
         }
