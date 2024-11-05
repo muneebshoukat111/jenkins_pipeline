@@ -8,19 +8,10 @@ pipeline {
         NAMESPACE = 'muneeb'
         HELM_CHART_PATH = './chart/muneeb'
         KUBECONFIG = "/home/muneeb/.kube/config" // Ensure Minikube KUBECONFIG path is set
-        K8S_TOKEN = credentials('jenkins-k8s-token')
+        K8S_TOKEN = credentials('jenkins-k8s-token') // Kubernetes token for authentication
     }
 
     stages {
-        // stage('Start Minikube') {
-        //     steps {
-        //         script {
-        //             // Start Minikube if it’s not already running
-        //             sh 'minikube start --driver=docker || echo "Minikube is already running"'
-        //         }
-        //     }
-        // }
-
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
@@ -59,13 +50,11 @@ pipeline {
         stage('Deploy to Local Kubernetes') {
             steps {
                 script {
-                    // Set KUBECONFIG environment variable explicitly if needed
-                   
+                    // Set credentials for kubectl using the provided K8S_TOKEN
+                    sh "kubectl config set-credentials jenkins-user --token=${K8S_TOKEN}"
                     
                     // Ensure namespace exists
-                    sh "kubectl config set-credentials jenkins-user --token=${K8S_TOKEN}"
-
-                    sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -"
+                    sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f - --validate=false"
 
                     // Deploy the Helm chart with the image tag as a value override
                     sh """
@@ -81,7 +70,9 @@ pipeline {
 
     post {
         always {
-            deleteDir()
+            node {
+                deleteDir() // Ensure deleteDir runs within a node context
+            }
         }
     }
 }
