@@ -70,9 +70,7 @@ pipeline {
 
     post {
         always {
-            node {
-                cleanWs() // Wrap cleanWs() in a node context
-            }
+            cleanWs() // Directly use cleanWs() without a node block
         }
     }
 }
