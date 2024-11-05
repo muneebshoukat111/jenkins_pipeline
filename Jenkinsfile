@@ -18,6 +18,7 @@ pipeline {
             steps {
                 script {
                     docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
+                    docker.build("${IMAGE_NAME}:latest", ".")
                 }
             }
         }
@@ -39,6 +40,7 @@ pipeline {
                 script {
                     // Remove the local Docker image after pushing to DockerHub
                     sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker rmi ${IMAGE_NAME}:latest
                 }
             }
         }
