@@ -8,6 +8,8 @@ pipeline {
         NAMESPACE = 'muneeb'
         HELM_CHART_PATH = './chart/muneeb'
         KUBECONFIG = "/home/muneeb/.kube/config" // Ensure Minikube KUBECONFIG path is set
+        KUBECONFIG = "/home/muneeb/.kube/config"
+        K8S_TOKEN = credentials('jenkins-k8s-token')
     }
 
     stages {
@@ -62,6 +64,8 @@ pipeline {
                     env.KUBECONFIG = '/home/muneeb/.kube/config'
                     
                     // Ensure namespace exists
+                    sh "kubectl config set-credentials jenkins-user --token=${K8S_TOKEN}"
+
                     sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -"
 
                     // Deploy the Helm chart with the image tag as a value override
