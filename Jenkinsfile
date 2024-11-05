@@ -53,7 +53,7 @@ pipeline {
 
                     // Deploy the Helm chart with the image tag as a value override
                     sh """
-                        helm upgrade --install my-release ${HELM_CHART_PATH} \
+                        helm upgrade --install test ${HELM_CHART_PATH} \
                             --namespace ${NAMESPACE} \
                             --set image.repository=${IMAGE_NAME} \
                             --set image.tag=${IMAGE_TAG}
