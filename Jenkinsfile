@@ -2,40 +2,9 @@ pipeline {
     agent any
     
     environment {
-        IMAGE_NAME = "test"
-        IMAGE_TAG = "0.1.${BUILD_NUMBER}" // This will increment the tag with each new build
-    }
-
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            // Clean up the workspace
-            deleteDir()
-        }
-    }
-}
-pipeline {
-    agent any
-    
-    environment {
         IMAGE_NAME = "muneebshoukat/test" // DockerHub repository name
         IMAGE_TAG = "0.1.${BUILD_NUMBER}" // Incremented tag with each build
-        DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f" // Updated with the correct credentials ID
+        DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f" // DockerHub credentials ID
     }
 
     stages {
@@ -82,6 +51,7 @@ pipeline {
         }
     }
 }
+
 // pipeline:
 //   agent: any
 
