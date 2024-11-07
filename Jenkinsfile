@@ -47,26 +47,26 @@ pipeline {
             }
         }
 
-        stage('Deploy to Local Kubernetes') {
-            steps {
-                script {
-                    // Set credentials for kubectl using the provided K8S_TOKEN
-                    sh "kubectl config set-credentials jenkins-user --token=${K8S_TOKEN}"
+    //     stage('Deploy to Local Kubernetes') {
+    //         steps {
+    //             script {
+    //                 // Set credentials for kubectl using the provided K8S_TOKEN
+    //                 sh "kubectl config set-credentials jenkins-user --token=${K8S_TOKEN}"
                     
-                    // Ensure namespace exists
-                    sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f - --validate=false"
+    //                 // Ensure namespace exists
+    //                 sh "kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f - --validate=false"
 
-                    // Deploy the Helm chart with the image tag as a value override
-                    sh """
-                        helm upgrade --install test ${HELM_CHART_PATH} \
-                            --namespace ${NAMESPACE} \
-                            --set image.repository=${IMAGE_NAME} \
-                            --set image.tag=${IMAGE_TAG}
-                    """
-                }
-            }
-        }
-    }
+    //                 // Deploy the Helm chart with the image tag as a value override
+    //                 sh """
+    //                     helm upgrade --install test ${HELM_CHART_PATH} \
+    //                         --namespace ${NAMESPACE} \
+    //                         --set image.repository=${IMAGE_NAME} \
+    //                         --set image.tag=${IMAGE_TAG}
+    //                 """
+    //             }
+    //         }
+    //     }
+    // }
 
     post {
         always {
