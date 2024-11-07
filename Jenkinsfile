@@ -64,7 +64,7 @@ pipeline {
                     sh "kubectl config set-context jenkins-context --cluster=<cluster-name> --namespace=${NAMESPACE} --user=jenkins-user"
                     sh "kubectl config use-context jenkins-context"
 
-                    // Create namespace if not exists
+                    // Create namespace if not exists, with validation disabled
                     sh """
                     kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f - --validate=false || true
                     """
