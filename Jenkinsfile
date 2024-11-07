@@ -60,8 +60,8 @@ pipeline {
         stage('Deploy to Local Kubernetes') {
             steps {
                 script {
-                    // Set Kubernetes context
-                    sh "kubectl config set-context jenkins-context --cluster=<cluster-name> --namespace=${NAMESPACE} --user=jenkins-user"
+                    // Set Kubernetes context with minikube cluster
+                    sh "kubectl config set-context jenkins-context --cluster=minikube --namespace=${NAMESPACE} --user=jenkins-user"
                     sh "kubectl config use-context jenkins-context"
 
                     // Create namespace if not exists, with validation disabled
