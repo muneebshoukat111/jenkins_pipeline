@@ -5,10 +5,9 @@ pipeline {
         IMAGE_NAME = "muneebshoukat/test"
         IMAGE_TAG = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        NAMESPACE = 'muneeb'
-        HELM_CHART_PATH = './chart/muneeb'
-        KUBECONFIG = "/home/muneeb/.kube/config" 
-        K8S_TOKEN = "2542492c1f7a2ce3d12cea14f2db96c19901957c02d894571a4efd3bfcd2a253" 
+        KUBERNETES_CREDENTIALS_ID = "k8s.connect"
+        K8S_NAMESPACE = "webapps"
+        K8S_SERVER_URL = "https://127.0.0.1:16443"
     }
 
     stages {
@@ -56,10 +55,26 @@ pipeline {
                 }
             }
         }
-        
 
-        
-        
+        stage('K8-Deploy') {
+            steps {
+                withKubeConfig(
+                    caCertificate: '', // Optional, leave empty unless you need a CA certificate
+                    clusterName: 'microk8s-cluster', // Descriptive cluster name
+                    contextName: '', // Optional, only use if you need a specific kube-context
+                    credentialsId: "${KUBERNETES_CREDENTIALS_ID}", // Jenkins credentials ID for Kubernetes
+                    namespace: "${K8S_NAMESPACE}", // Target namespace
+                    restrictKubeConfigAccess: false, // Default behavior
+                    serverUrl: "${K8S_SERVER_URL}" // Kubernetes API server URL
+                ) {
+                    sh '''
+                    kubectl apply -f deployment-service.yml
+                    kubectl get pods
+                    kubectl get svc
+                    '''
+                }
+            }
+        }
     }
 
     post {
