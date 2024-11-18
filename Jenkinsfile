@@ -5,8 +5,10 @@ pipeline {
         IMAGE_NAME = "muneebshoukat/test"
         IMAGE_TAG = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        NAMESPACE = 'wabapps'
+        NAMESPACE = 'muneeb'
         HELM_CHART_PATH = './chart/muneeb'
+        KUBECONFIG = "/home/muneeb/.kube/config" 
+        K8S_TOKEN = "2542492c1f7a2ce3d12cea14f2db96c19901957c02d894571a4efd3bfcd2a253" 
     }
 
     stages {
@@ -54,35 +56,10 @@ pipeline {
                 }
             }
         }
+        
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                withKubeConfig(
-                    caCertificate: '', 
-                    clusterName: 'microk8s-cluster', 
-                    contextName: '', 
-                    credentialsId: 'k8s.connect', 
-                    namespace: 'wabapps', 
-                    restrictKubeConfigAccess: false, 
-                    serverUrl: 'https://127.0.0.1:16443'
-                ) {
-                    script {
-                        // Create namespace if not exists
-                        sh """
-                        kubectl create namespace ${NAMESPACE} --dry-run=client -o yaml | kubectl apply -f - || true
-                        """
-
-                        // Deploy Helm chart
-                        sh """
-                        helm upgrade --install test ${HELM_CHART_PATH} \
-                            --namespace ${NAMESPACE} \
-                            --set image.repository=${IMAGE_NAME} \
-                            --set image.tag=${IMAGE_TAG} --debug
-                        """
-                    }
-                }
-            }
-        }
+        
+        
     }
 
     post {
