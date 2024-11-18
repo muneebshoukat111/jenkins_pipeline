@@ -68,7 +68,6 @@ pipeline {
                     serverUrl: "${K8S_SERVER_URL}" // Kubernetes API server URL
                 ) {
                     sh '''
-                    kubectl apply -f deployment-service.yml
                     kubectl get pods
                     kubectl get svc
                     '''
