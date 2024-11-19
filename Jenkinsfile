@@ -59,18 +59,22 @@ pipeline {
         stage('K8-Deploy') {
             steps {
                 withKubeConfig(
-                    caCertificate: '', // Optional, leave empty unless you need a CA certificate
-                    clusterName: 'microk8s-cluster', // Descriptive cluster name
-                    contextName: '', // Optional, only use if you need a specific kube-context
-                    credentialsId: "${KUBERNETES_CREDENTIALS_ID}", // Jenkins credentials ID for Kubernetes
-                    namespace: "${K8S_NAMESPACE}", // Target namespace
-                    restrictKubeConfigAccess: false, // Default behavior
-                    serverUrl: "${K8S_SERVER_URL}" // Kubernetes API server URL
+                    caCertificate: '', // Optional
+                    clusterName: 'microk8s-cluster',
+                    contextName: '', // Optional
+                    credentialsId: "${KUBERNETES_CREDENTIALS_ID}",
+                    namespace: "${K8S_NAMESPACE}",
+                    restrictKubeConfigAccess: false,
+                    serverUrl: "${K8S_SERVER_URL}"
                 ) {
-                    sh '''
-                    kubectl get pods
-                    kubectl get svc
-                    '''
+                    script {
+                        sh '''
+                        kubectl config view
+                        kubectl config current-context
+                        kubectl get pods --namespace=${K8S_NAMESPACE}
+                        kubectl get svc --namespace=${K8S_NAMESPACE}
+                        '''
+                    }
                 }
             }
         }
