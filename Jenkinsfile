@@ -93,14 +93,14 @@ pipeline {
     environment {
         K8S_NAMESPACE = "webapps"
         K8S_SERVER_URL = "https://192.168.0.173:16443" // Kubernetes API server URL
-        K8S_USER_TOKEN = "eyJhbGciOiJSUzI1NiIsImtpZCI6IndrWEdiTzY4X0NybjkwYXdXTnhyWG1kNEpHN3d3alZZaDRrUW9WV0ZqTTQifQ..." // Replace this with the actual token
+        K8S_USER_TOKEN = credentials('k8s-user-token-id') // Replace with Jenkins credentials ID
     }
 
     stages {
         stage('Setup Kubernetes Config') {
             steps {
                 script {
-                    // Create a kubeconfig file with the hard-coded token
+                    // Create a kubeconfig file with the token from Jenkins credentials
                     writeFile file: 'kubeconfig', text: """
                     apiVersion: v1
                     kind: Config
@@ -121,6 +121,17 @@ pipeline {
                       user:
                         token: ${K8S_USER_TOKEN}
                     """
+                }
+            }
+        }
+
+        stage('Ensure Namespace Exists') {
+            steps {
+                script {
+                    sh '''
+                    export KUBECONFIG=kubeconfig
+                    kubectl create namespace ${K8S_NAMESPACE} || echo "Namespace already exists"
+                    '''
                 }
             }
         }
