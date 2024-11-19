@@ -92,7 +92,7 @@ pipeline {
 
     environment {
         K8S_NAMESPACE = "webapps"
-        K8S_SERVER_URL = "https://192.168.0.173:16443" // Kubernetes API server URL
+        K8S_SERVER_URL = "https://127.0.0.1:16443" // Kubernetes API server URL
         K8S_USER_TOKEN = "eyJhbGciOiJSUzI1NiIsImtpZCI6IndrWEdiTzY4X0NybjkwYXdXTnhyWG1kNEpHN3d3alZZaDRrUW9WV0ZqTTQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJ3ZWJhcHBzIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6Im15c2VjcmV0bmFtZSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJqZW5raW5zIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMDE5ZTBiYjMtMzI5NC00NDYyLTkyYzctOGM3YjBkYTkyZjBiIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OndlYmFwcHM6amVua2lucyJ9.anJ1zO_R6gpOSxcjFMHHQjX5JFLfabjuTmkcsRX4yeF6N5gNbQ-WhZVmhUJLzA7R274uef0JwJpzgRZX1GD1VlrHYSwS2Uppe5JmGLCmEInwpzogatXiiOneUJEneUoFgtCC1uEA9o6I9dttgbfEL_igx8J1Crs_wCDZbJ-xkDuwt1fKBjF92khLAowZVjU5lNmS5NfPqYC8qAt2j8l1i7rptFEf3eqLg_iu8n5Lwtf-ILCKaJMNRoesBVTkhH_HGfP56ERsmRaTAAm5sFjIU7vAU7hd-eYL-F53MMWwY44YiSjVX9mxwVuZRvv6gwUr1AtY3P7bynDaHuC52yCzVQ" // Replace this with the actual token
     }
 
