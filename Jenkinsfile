@@ -21,40 +21,40 @@ pipeline {
             }
         }
 
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', url: 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
-            }
-        }
+        // stage('Clone Repository') {
+        //     steps {
+        //         git branch: 'main', url: 'https://github.com/muneebshoukat111/jenkins_pipeline.git'
+        //     }
+        // }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
-                    docker.build("${IMAGE_NAME}:latest", ".")
-                }
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         script {
+        //             docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
+        //             docker.build("${IMAGE_NAME}:latest", ".")
+        //         }
+        //     }
+        // }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
-                        docker.image("${IMAGE_NAME}:latest").push()
-                    }
-                }
-            }
-        }
+        // stage('Push Docker Image') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
+        //                 docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
+        //                 docker.image("${IMAGE_NAME}:latest").push()
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('Cleanup Docker Image') {
-            steps {
-                script {
-                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
-                    sh "docker rmi ${IMAGE_NAME}:latest || true"
-                }
-            }
-        }
+        // stage('Cleanup Docker Image') {
+        //     steps {
+        //         script {
+        //             sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
+        //             sh "docker rmi ${IMAGE_NAME}:latest || true"
+        //         }
+        //     }
+        // }
 
         stage('K8-Deploy') {
             steps {
