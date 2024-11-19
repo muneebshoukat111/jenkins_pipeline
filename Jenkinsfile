@@ -7,7 +7,7 @@ pipeline {
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
         KUBERNETES_CREDENTIALS_ID = "k8s.connect"
         K8S_NAMESPACE = "webapps"
-        K8S_SERVER_URL = "https://127.0.0.1:16443"
+        K8S_SERVER_URL = "https://192.168.0.173:16443"
     }
 
     stages {
