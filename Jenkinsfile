@@ -88,20 +88,18 @@
 // }
 pipeline {
     agent any
-    
     environment {
-        // Set KUBECONFIG environment variable if you're using a file path
-        KUBECONFIG = '/var/jenkins_home/jenkins-kubeconfig.yaml'  // Adjust with correct path if necessary
+        KUBECONFIG = '/home/muneeb/.kube/config'  // Path to your kubeconfig file
     }
-
     stages {
-        stage('Check Kubernetes Pods') {
+        stage('Get Kubernetes Namespaces') {
             steps {
                 script {
-                    // Run kubectl command to list pods in the 'muneeb' namespace
-                    sh 'kubectl get pods -n muneeb'
+                    echo 'Running kubectl get namespaces'
+                    sh 'kubectl get namespaces'
                 }
             }
         }
     }
 }
+
