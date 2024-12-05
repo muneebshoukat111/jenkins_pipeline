@@ -89,14 +89,15 @@
 pipeline {
     agent any
     environment {
-        KUBECONFIG = '/home/muneeb/.kube/config'  // Path to your kubeconfig file
+        KUBECONFIG = '/home/muneeb/.kube/config'
     }
     stages {
-        stage('Check Kubeconfig') {
+        stage('Verify kubectl Installation') {
             steps {
                 script {
-                    echo 'Checking Kubeconfig file'
-                    sh 'ls -l $KUBECONFIG'  // Verify the kubeconfig file exists
+                    echo 'Checking kubectl version'
+                    sh 'which kubectl'  // Check if kubectl is installed and in the path
+                    sh 'kubectl version --client'  // Show kubectl version
                 }
             }
         }
@@ -110,5 +111,3 @@ pipeline {
         }
     }
 }
-
-
