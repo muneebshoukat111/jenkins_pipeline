@@ -92,11 +92,11 @@ pipeline {
         KUBECONFIG = '/home/muneeb/.kube/config'  // Path to your kubeconfig file
     }
     stages {
-        stage('Verify kubectl Installation') {
+        stage('Check Kubeconfig') {
             steps {
                 script {
-                    echo 'Checking kubectl version'
-                    sh 'kubectl version --client'
+                    echo 'Checking Kubeconfig file'
+                    sh 'ls -l $KUBECONFIG'  // Verify the kubeconfig file exists
                 }
             }
         }
@@ -110,4 +110,5 @@ pipeline {
         }
     }
 }
+
 
