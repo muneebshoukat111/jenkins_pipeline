@@ -92,6 +92,14 @@ pipeline {
         KUBECONFIG = '/home/muneeb/.kube/config'  // Path to your kubeconfig file
     }
     stages {
+        stage('Verify kubectl Installation') {
+            steps {
+                script {
+                    echo 'Checking kubectl version'
+                    sh 'kubectl version --client'
+                }
+            }
+        }
         stage('Get Kubernetes Namespaces') {
             steps {
                 script {
