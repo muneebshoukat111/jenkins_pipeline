@@ -87,27 +87,14 @@
 //     }
 // }
 pipeline {
-    agent any
-    environment {
-        KUBECONFIG = '/home/muneeb/.kube/config'
-    }
-    stages {
-        // stage('Verify kubectl Installation') {
-        //     steps {
-        //         script {
-        //             echo 'Checking kubectl version'
-        //             sh 'which kubectl'  // Check if kubectl is installed and in the path
-        //             sh 'kubectl version --client'  // Show kubectl version
-        //         }
-        //     }
-        // }
-        stage('Get  Kubernetes pod') {
-            steps {
-                script {
-                    echo 'Running kubectl get namespaces'
-                    sh 'kubectl get pod -n jenkins'
-                }
-            }
+  agent any
+  stages {
+    stage('Get Kubernetes Pods') {
+      steps {
+        withCredentials([file(credentialsId: 'test', variable: 'KUBECONFIG')]) {
+          sh 'kubectl get pods -n jenkins'
         }
+      }
     }
+  }
 }
