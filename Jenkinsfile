@@ -99,7 +99,7 @@ pipeline {
                     namespace: 'jenkins',        // The namespace you want to check
                     serverUrl: 'https://192.168.49.2:8443' // Your cluster's API server URL
                 ]]) {
-                    sh 'kubectl  create ns 0300'
+                    sh 'kubectl   get pod -n jenkins'
                 }
             }
         }
