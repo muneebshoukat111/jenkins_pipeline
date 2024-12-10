@@ -88,20 +88,31 @@
 // }
 pipeline {
     agent any
+    environment {
+        // Reference the Kubernetes ServiceAccount Token
+        KUBERNETES_TOKEN = credentials('k8s-serviceaccount-token')
+    }
     stages {
-        stage('Check Pods in Jenkins Namespace') {
+        stage('Create Namespace') {
             steps {
-                withKubeCredentials(kubectlCredentials: [[
-                    caCertificate: '',           // Add CA data if needed
-                    clusterName: 'minikube',     // Your cluster name
-                    contextName: 'jenkins-ctx',  // A name for the context (optional)
-                    credentialsId: 'test',       // The ID of your Kubernetes credentials in Jenkins
-                    namespace: 'jenkins',        // The namespace you want to check
-                    serverUrl: 'https://192.168.49.2:8443' // Your cluster's API server URL
-                ]]) {
-                    sh 'kubectl run nginx --image=nginx:alpine --restart=Never -n jenkins'
+                script {
+                    // Configure kubectl to use the ServiceAccount token
+                    sh '''
+                        # Set the Kubernetes API server URL (only if Jenkins is outside the cluster)
+                        # Uncomment and set the URL if needed
+                        # export KUBERNETES_URL=https://<minikube-ip>:8443
+
+                        # Configure kubectl with the token
+                        kubectl config set-credentials jenkins --token=${KUBERNETES_TOKEN}
+                        kubectl config set-context default --cluster=minikube --user=jenkins
+                        kubectl config use-context default
+
+                        # Create the namespace
+                        kubectl create namespace muneeb-test || echo "Namespace 'muneeb-test' already exists."
+                    '''
                 }
             }
         }
     }
 }
+
