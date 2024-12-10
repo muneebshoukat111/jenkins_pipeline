@@ -88,13 +88,15 @@
 // }
 pipeline {
   agent any
+  environment {
+    KUBECONFIG = '/home/jenkins/.kube/config'
+  }
   stages {
     stage('Get Kubernetes Pods') {
       steps {
-        withCredentials([file(credentialsId: 'test', variable: 'KUBECONFIG')]) {
-          sh 'kubectl get pods -n jenkins'
-        }
+        sh 'kubectl get pods -n jenkins'
       }
     }
   }
 }
+
