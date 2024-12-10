@@ -101,7 +101,7 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Get Kubernetes Namespaces') {
+        stage('Get  Kubernetes pod') {
             steps {
                 script {
                     echo 'Running kubectl get namespaces'
