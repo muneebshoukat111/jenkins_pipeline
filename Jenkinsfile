@@ -108,7 +108,7 @@ pipeline {
                         kubectl config use-context default
 
                         # Create the namespace
-                        kubectl create namespace muneeb-test || echo "Namespace 'muneeb-test' already exists."
+                        kubectl create namespace muneeb-test 
                     '''
                 }
             }
