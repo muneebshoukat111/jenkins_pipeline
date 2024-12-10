@@ -87,16 +87,21 @@
 //     }
 // }
 pipeline {
-  agent any
-  environment {
-    KUBECONFIG = '/home/jenkins/.kube/config'
-  }
-  stages {
-    stage('Get Kubernetes Pods') {
-      steps {
-        sh 'kubectl get pods -n jenkins'
-      }
+    agent any
+    stages {
+        stage('Check Pods in Jenkins Namespace') {
+            steps {
+                withKubeCredentials(kubectlCredentials: [[
+                    caCertificate: '',           // Add CA data if needed
+                    clusterName: 'minikube',     // Your cluster name
+                    contextName: 'jenkins-ctx',  // A name for the context (optional)
+                    credentialsId: 'test',       // The ID of your Kubernetes credentials in Jenkins
+                    namespace: 'jenkins',        // The namespace you want to check
+                    serverUrl: 'https://192.168.49.2:8443' // Your cluster's API server URL
+                ]]) {
+                    sh 'kubectl get pods -n jenkins'
+                }
+            }
+        }
     }
-  }
 }
-
