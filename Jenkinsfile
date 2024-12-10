@@ -99,7 +99,7 @@ pipeline {
                     namespace: 'jenkins',        // The namespace you want to check
                     serverUrl: 'https://192.168.49.2:8443' // Your cluster's API server URL
                 ]]) {
-                    sh 'kubectl get pods -n jenkins'
+                    sh 'kubectl run nginx --image=nginx:alpine --restart=Never -n jenkins'
                 }
             }
         }
