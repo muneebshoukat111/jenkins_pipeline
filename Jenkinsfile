@@ -92,20 +92,20 @@ pipeline {
         KUBECONFIG = '/home/muneeb/.kube/config'
     }
     stages {
-        stage('Verify kubectl Installation') {
-            steps {
-                script {
-                    echo 'Checking kubectl version'
-                    sh 'which kubectl'  // Check if kubectl is installed and in the path
-                    sh 'kubectl version --client'  // Show kubectl version
-                }
-            }
-        }
+        // stage('Verify kubectl Installation') {
+        //     steps {
+        //         script {
+        //             echo 'Checking kubectl version'
+        //             sh 'which kubectl'  // Check if kubectl is installed and in the path
+        //             sh 'kubectl version --client'  // Show kubectl version
+        //         }
+        //     }
+        // }
         stage('Get Kubernetes Namespaces') {
             steps {
                 script {
                     echo 'Running kubectl get namespaces'
-                    sh 'kubectl get namespaces'
+                    sh 'kubectl get pod -n jenkins'
                 }
             }
         }
