@@ -99,7 +99,7 @@ pipeline {
             steps {
                 sh 'kubectl create namespace muneeb-finale'
                 sh 'kubectl  get pod -n muneeb-finale'
-                sh 'kubectl get  pod kube-system'
+                sh 'kubectl get  pod -n kube-system'
             }
         }
     }
