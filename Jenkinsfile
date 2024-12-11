@@ -97,7 +97,9 @@ pipeline {
     stages {
         stage('Create Namespace') {
             steps {
-                sh 'kubectl create namespace muneeb-9900'
+                sh 'kubectl create namespace muneeb-finale'
+                sh 'kubectl  get pod -n muneeb-finale'
+                sh 'kubectl get  pod kube-system'
             }
         }
     }
