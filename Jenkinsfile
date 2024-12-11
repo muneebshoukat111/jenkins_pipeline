@@ -88,31 +88,23 @@
 // }
 pipeline {
     agent any
+
     environment {
-        // Reference the Kubernetes ServiceAccount Token
-        KUBERNETES_TOKEN = credentials('k8s-serviceaccount-token')
+        // Inject the kubeconfig file as an environment variable
+        KUBECONFIG = credentials('kubeconfig-jenkins')
     }
+
     stages {
         stage('Create Namespace') {
             steps {
-                script {
-                    // Configure kubectl to use the ServiceAccount token
-                    sh '''
-                        # Set the Kubernetes API server URL (only if Jenkins is outside the cluster)
-                        # Uncomment and set the URL if needed
-                        # export KUBERNETES_URL=https://<minikube-ip>:8443
-
-                        # Configure kubectl with the token
-                        kubectl config set-credentials jenkins --token=${KUBERNETES_TOKEN}
-                        kubectl config set-context default --cluster=minikube --user=jenkins
-                        kubectl config use-context default
-
-                        # Create the namespace
-                        kubectl create namespace muneeb-test 
-                    '''
-                }
+                sh 'kubectl create namespace muneeb-9900'
             }
         }
     }
-}
 
+    post {
+        always {
+            echo "Pipeline completed."
+        }
+    }
+}
