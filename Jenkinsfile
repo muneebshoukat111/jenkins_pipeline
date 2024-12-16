@@ -91,7 +91,7 @@ pipeline {
 
     environment {
        
-        KUBECONFIG = credentials('test')
+        KUBECONFIG = credentials('kubeconfig-jenkins.yml')
     }
 
     stages {
