@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: jenkins
-  namespace: jenkins
+  namespace: muneeb # Must match the ServiceAccount namespace above!
 roleRef:
   kind: ClusterRole
   name: jenkins-cluster-role
