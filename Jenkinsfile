@@ -91,7 +91,7 @@ pipeline {
 
     environment {
         // Inject the kubeconfig file as an environment variable
-        KUBECONFIG = credentials('kubeconfig-jenkins.yml(muneeb)')
+        KUBECONFIG = credentials('muneeb')
     }
 
     stages {
