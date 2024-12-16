@@ -91,7 +91,7 @@ pipeline {
 
     environment {
        
-        KUBECONFIG = credentials('muneeb')
+        KUBECONFIG = credentials('kubeconfig-jenkins')
     }
 
     stages {
