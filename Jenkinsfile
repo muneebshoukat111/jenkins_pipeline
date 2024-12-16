@@ -90,7 +90,7 @@ pipeline {
     agent any
 
     environment {
-        // Inject the kubeconfig file as an environment variable
+       
         KUBECONFIG = credentials('muneeb')
     }
 
