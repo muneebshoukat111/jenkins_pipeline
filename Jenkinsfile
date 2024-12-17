@@ -7,8 +7,8 @@ pipeline {
         IMAGE_TAG               = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID   = "e0185fe0-af38-4847-9e87-bed5e756348f"
         KUBERNETES_CREDENTIALS_ID = "000"       // Jenkins credential ID for kubeconfig
-        K8S_NAMESPACE    // K8S_SERVER_URL          = "https:        = "webapps"
-       //192.168.0.173:16443"
+        K8S_NAMESPACE           = "muneeb"
+        // K8S_SERVER_URL          = "https://192.168.0.173:16443"
         
         // Set the KUBECONFIG environment variable from Jenkins credentials
         KUBECONFIG = credentials("${KUBERNETES_CREDENTIALS_ID}")
