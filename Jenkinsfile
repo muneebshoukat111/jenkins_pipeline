@@ -67,7 +67,7 @@ pipeline {
                 script {
                     // Change directory to where your Helm chart is located
                     sh '''
-                        cd /jenkins_pipeline/chart
+                        
                         # For a fresh install or an upgrade
                         helm upgrade --install muneeb . \
                             --namespace ${K8S_NAMESPACE} \
