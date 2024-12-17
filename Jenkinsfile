@@ -62,10 +62,9 @@ pipeline {
                 script {
                     // The chart is in ./chart relative to Jenkinsfile
                     sh '''
-                        helm upgrade --install myapp ./chart \
-                            --namespace ${K8S_NAMESPACE} \
-                            --create-namespace \
-                            -f ./chart/values.yaml
+                        helm upgrade --install my-nginx nginx/stable-nginx \
+                                      --namespace ${K8S_NAMESPACE} \
+                                      --create-namespace
                     '''
                 }
             }
