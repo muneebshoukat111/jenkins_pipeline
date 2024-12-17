@@ -2,15 +2,11 @@ pipeline {
     agent any
 
     environment {
-        // Docker & Kubernetes details (if needed)
-        IMAGE_NAME              = "muneebshoukat/test"
-        IMAGE_TAG               = "0.1.${BUILD_NUMBER}"
-        DOCKER_CREDENTIALS_ID   = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        KUBERNETES_CREDENTIALS_ID = "000" // Jenkins credential ID for your Kubeconfig
-        K8S_NAMESPACE           = "webapps" // or whichever namespace you want to deploy into
-        
-        // Set KUBECONFIG from Jenkins credentials
-        KUBECONFIG = credentials("${KUBERNETES_CREDENTIALS_ID}")
+        IMAGE_NAME            = "muneebshoukat/test"
+        IMAGE_TAG             = "0.1.${BUILD_NUMBER}"
+        DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
+        K8S_NAMESPACE         = "webapps"
+        KUBECONFIG            = credentials('000')  // Jenkins credential ID for kubeconfig
     }
 
     stages {
@@ -31,7 +27,7 @@ pipeline {
             }
         }
 
-        // Optional stages if you want to build and push Docker images
+        // Optional: Build & push Docker image if needed
         stage('Build Docker Image') {
             steps {
                 script {
@@ -61,18 +57,15 @@ pipeline {
             }
         }
 
-        // The new deployment stage
         stage('Deploy Helm Chart') {
             steps {
                 script {
-                    // Change directory to where your Helm chart is located
+                    // The chart is in ./chart relative to Jenkinsfile
                     sh '''
-                        
-                        # For a fresh install or an upgrade
-                        helm upgrade --install muneeb . \
+                        helm upgrade --install myapp ./chart \
                             --namespace ${K8S_NAMESPACE} \
                             --create-namespace \
-                            -f values.yaml
+                            -f ./chart/values.yaml
                     '''
                 }
             }
