@@ -60,11 +60,15 @@ pipeline {
         stage('Deploy Helm Chart') {
             steps {
                 script {
-                    // The chart is in ./chart relative to Jenkinsfile
                     sh '''
-                        helm install my-nginx nginx/stable-nginx \
-                          --namespace ${K8S_NAMESPACE} \
-                          --create-namespace
+                        # Add your desired Helm repo. For example, the official NGINX stable repo:
+                        helm repo add nginx-stable https://helm.nginx.com/stable
+                        helm repo update
+
+                        # Install a chart named "nginx-ingress" from the added repo
+                        helm install my-nginx nginx-stable/nginx-ingress \
+                            --namespace ${K8S_NAMESPACE} \
+                            --create-namespace
                     '''
                 }
             }
