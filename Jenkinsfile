@@ -5,7 +5,7 @@ pipeline {
         IMAGE_NAME            = "muneebshoukat/test"
         IMAGE_TAG             = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        K8S_NAMESPACE         = "webapps"
+        K8S_NAMESPACE         = "muneeb"
         KUBECONFIG            = credentials('000')  // Jenkins credential ID for kubeconfig
     }
 
