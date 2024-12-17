@@ -91,7 +91,7 @@ pipeline {
 
     environment {
        
-        KUBECONFIG = credentials('love-you-noor')
+        KUBECONFIG = credentials('000')
     }
 
     stages {
