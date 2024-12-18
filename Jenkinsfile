@@ -59,7 +59,7 @@ pipeline {
 
         stage('Deploy Helm Chart') {
             steps {
-                sh 'helm upgrade my-release ./infra/app -n muneeb-finale'
+                sh 'helm upgrade my-release ./infra/app -n staging'
                 // sh 'helm install my-release ./infra/app -n muneeb-finale'
             }
         }
