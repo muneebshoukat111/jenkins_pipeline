@@ -92,13 +92,13 @@ pipeline {
     stages {
         stage('Setup') {
             steps {
-                // You can leave this empty or add commands like:
-                // sh 'kubectl version --short'
+                echo "Setup stage"
             }
         }
 
         stage('Deploy Helm Chart') {
             steps {
+                // Assuming helm and infra/app directory are present
                 sh 'helm upgrade --install my-release ./infra/app -n muneeb-finale'
             }
         }
