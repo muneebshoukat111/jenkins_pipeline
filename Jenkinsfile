@@ -91,24 +91,9 @@ pipeline {
 
     stages {
         stage('Setup') {
-            steps {
-                // Ensure that helm and kubectl are accessible.
-                // For example, if you have a Docker image with both installed, just ensure you're using it.
-                // Otherwise, you can install helm in this step if needed.
-                
-                // Example: Verify cluster connection
-                sh 'kubectl version --short'
-            }
-        }
+            
 
-        stage('Create Namespace') {
-            steps {
-                // Use -o jsonpath or check for existence to avoid errors if it already exists
-                sh 'kubectl create namespace muneeb-finale || true'
-                sh 'kubectl get ns muneeb-finale'
-            }
-        }
-
+        
         stage('Deploy Helm Chart') {
             steps {
                 // Navigate into the directory if needed, or reference by relative path.
