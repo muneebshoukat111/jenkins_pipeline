@@ -5,7 +5,7 @@ metadata:
   labels: nginx
   chart: first-chart
 image:
-  repository: nginx
+  repository: "muneebshoukat/test" 
   tag: "latest"
   pullPolicy: IfNotPresent
 
