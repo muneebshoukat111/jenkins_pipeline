@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysecretname
-  annotations:
-    kubernetes.io/service-account.name: jenkins
-  namespace: muneeb
-type: kubernetes.io/service-account-token
