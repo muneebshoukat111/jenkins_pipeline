@@ -137,8 +137,7 @@ pipeline {
                     helm install my-release ./infra/app \
                         --namespace ${K8S_NAMESPACE} \
                         --set image.repository=${IMAGE_NAME} \
-                        --set image.tag=latest \
-                        --install
+                        --set image.tag=latest 
                 """
             }
         }
