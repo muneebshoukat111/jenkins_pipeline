@@ -75,6 +75,10 @@
 pipeline {
     agent any
 
+    triggers {
+        githubPush()  // This will trigger the pipeline when a new commit is pushed to GitHub
+    }
+
     environment {
         IMAGE_NAME            = "muneebshoukat/test"
         IMAGE_TAG             = "0.1.${BUILD_NUMBER}"
