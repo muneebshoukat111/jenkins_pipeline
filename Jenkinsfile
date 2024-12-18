@@ -98,14 +98,11 @@ pipeline {
 
         stage('Deploy Helm Chart') {
             steps {
-                // Assuming helm and infra/app directory are present
-                sh 'helm upgrade --install my-release ./infra/app -n muneeb-finale'
-            }
-        }
+                // First-time installation of the Helm chart
+               // sh 'helm install my-release ./infra/app -n muneeb-finale'
 
-        stage('Post-Deployment Check') {
-            steps {
-                sh 'kubectl get pods -n muneeb-finale'
+                // For subsequent deployments, comment out the above "install" line and uncomment the "upgrade" line:
+                 sh 'helm upgrade my-release ./infra/app -n muneeb-finale'
             }
         }
     }
