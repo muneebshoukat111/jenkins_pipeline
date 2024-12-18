@@ -1,12 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "my-nginx-chart.fullname" . }}
+  name: {{ .Values.service.name }}
   labels:
-    app: {{ include "my-nginx-chart.name" . }}
-    chart: {{ include "my-nginx-chart.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: {{ .Values.service.labels }}
+
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -15,5 +13,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ include "my-nginx-chart.name" . }}
-    release: {{ .Release.Name }}
+    app: {{ .Values.metadata.labels }}
+    chart: {{ .Values.metadata.chart }}

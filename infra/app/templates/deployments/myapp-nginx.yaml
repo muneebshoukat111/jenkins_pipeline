@@ -1,23 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "my-nginx-chart.fullname" . }}
+  name: {{ .Values.metadata.name }}
   labels:
-    app: {{ include "my-nginx-chart.name" . }}
-    chart: {{ include "my-nginx-chart.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    app: {{ .Values.metadata.labels }}
+    chart: {{ .Values.metadata.chart }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "my-nginx-chart.name" . }}
-      release: {{ .Release.Name }}
+      app: {{ .Values.metadata.labels }}
+      chart: {{ .Values.metadata.chart }}
   template:
     metadata:
       labels:
-        app: {{ include "my-nginx-chart.name" . }}
-        release: {{ .Release.Name }}
+        app: {{ .Values.metadata.labels }}
+        chart: {{ .Values.metadata.chart }}
     spec:
       containers:
         - name: nginx
@@ -25,5 +23,4 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 80
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+          
