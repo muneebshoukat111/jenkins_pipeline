@@ -91,21 +91,20 @@ pipeline {
 
     stages {
         stage('Setup') {
-            
+            steps {
+                // You can leave this empty or add commands like:
+                // sh 'kubectl version --short'
+            }
+        }
 
-        
         stage('Deploy Helm Chart') {
             steps {
-                // Navigate into the directory if needed, or reference by relative path.
-                // In this example, assuming the Jenkins workspace contains 'infra/app'
-                // with the chart structure: charts/, Chart.yaml, templates/, values.yaml
                 sh 'helm upgrade --install my-release ./infra/app -n muneeb-finale'
             }
         }
 
         stage('Post-Deployment Check') {
             steps {
-                // Check that pods are running in the target namespace
                 sh 'kubectl get pods -n muneeb-finale'
             }
         }
