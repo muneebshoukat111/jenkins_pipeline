@@ -1,20 +1,20 @@
 
 replicaCount: 1
 metadata:
-  name: nginx-pod
+  name: dev-pod
   labels: nginx
-  chart: first-chart
+  chart: dev-chart
 image:
-  repository: "muneebshoukat/test" 
-  tag: "0.1.134"
+  repository: "muneebshoukat/webapp" 
+  tag: "latest"
   pullPolicy: IfNotPresent
 imagePullSecrets:
   - name: dockerhub-secret
 service:
-  name: nginx-svc
-  labels: staging-svc
+  name: dev-svc
+  labels: dev-svc
   type: ClusterIP
-  port: 80
+  port: 85
   
 resources:
   limits:
