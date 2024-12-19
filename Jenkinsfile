@@ -90,7 +90,7 @@ pipeline {
     environment {
         IMAGE_NAME    = "muneebshoukat/test"
         IMAGE_TAG     = "latest"  // Use the desired tag from DockerHub
-        K8S_NAMESPACE = "muneeb-f"
+        K8S_NAMESPACE = "muneeb-test"
         KUBECONFIG    = credentials('1234')  // Jenkins credential ID for kubeconfig
     }
 
@@ -112,13 +112,7 @@ pipeline {
             }
         }
 
-        stage('Create Namespace') {
-            steps {
-                sh """
-                    kubectl create namespace ${K8S_NAMESPACE}
-                """
-            }
-        }
+        
 
         stage('Apply DockerHub Secret') {
             steps {
