@@ -67,7 +67,7 @@ pipeline {
                     helm upgrade my-release ./infra/app \
                         --namespace ${K8S_NAMESPACE} \
                         --set image.repository=${IMAGE_NAME} \
-                        --set image.tag=0.1.130
+                        --set image.tag=0.1.13
                 """
             }
         }
