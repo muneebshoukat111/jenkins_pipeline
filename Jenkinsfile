@@ -1,11 +1,15 @@
 // pipeline {
 //     agent any
 
+//     triggers {
+//         githubPush()  // This will trigger the pipeline when a new commit is pushed to GitHub
+//     }
+
 //     environment {
 //         IMAGE_NAME            = "muneebshoukat/test"
 //         IMAGE_TAG             = "0.1.${BUILD_NUMBER}"
 //         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-//         K8S_NAMESPACE         = "muneeb"
+//         K8S_NAMESPACE         = "muneeb-finale"
 //         KUBECONFIG            = credentials('1234')  // Jenkins credential ID for kubeconfig
 //     }
 
@@ -59,8 +63,12 @@
 
 //         stage('Deploy Helm Chart') {
 //             steps {
-//                 sh 'helm upgrade my-release ./infra/app -n staging'
-//                 // sh 'helm install my-release ./infra/app -n staging'
+//                 sh """
+//                     helm upgrade my-release ./infra/app \
+//                         --namespace ${K8S_NAMESPACE} \
+//                         --set image.repository=${IMAGE_NAME} \
+//                         --set image.tag=latest 
+//                 """
 //             }
 //         }
 //     }
@@ -76,15 +84,14 @@ pipeline {
     agent any
 
     triggers {
-        githubPush()  // This will trigger the pipeline when a new commit is pushed to GitHub
+        githubPush()  // Triggers the pipeline when a new commit is pushed to GitHub
     }
 
     environment {
-        IMAGE_NAME            = "muneebshoukat/test"
-        IMAGE_TAG             = "0.1.${BUILD_NUMBER}"
-        DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        K8S_NAMESPACE         = "muneeb-finale"
-        KUBECONFIG            = credentials('1234')  // Jenkins credential ID for kubeconfig
+        IMAGE_NAME    = "muneebshoukat/test"
+        IMAGE_TAG     = "latest"  // Use the desired tag from DockerHub
+        K8S_NAMESPACE = "muneeb-finale"
+        KUBECONFIG    = credentials('1234')  // Jenkins credential ID for kubeconfig
     }
 
     stages {
@@ -105,32 +112,20 @@ pipeline {
             }
         }
 
-        // Optional: Build & push Docker image if needed
-        stage('Build Docker Image') {
+        stage('Create Namespace') {
             steps {
-                script {
-                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}", ".")
-                    docker.build("${IMAGE_NAME}:latest", ".")
-                }
+                sh """
+                    kubectl create namespace ${K8S_NAMESPACE} || echo "Namespace ${K8S_NAMESPACE} already exists."
+                """
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Apply DockerHub Secret') {
             steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', "${DOCKER_CREDENTIALS_ID}") {
-                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
-                        docker.image("${IMAGE_NAME}:latest").push()
-                    }
-                }
-            }
-        }
-
-        stage('Cleanup Docker Image') {
-            steps {
-                script {
-                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
-                    sh "docker rmi ${IMAGE_NAME}:latest || true"
+                withCredentials([file(credentialsId: 'dockerhub-secret-yaml', variable: 'DOCKER_SECRET_YAML')]) {
+                    sh """
+                        kubectl apply -f \$DOCKER_SECRET_YAML
+                    """
                 }
             }
         }
@@ -138,10 +133,10 @@ pipeline {
         stage('Deploy Helm Chart') {
             steps {
                 sh """
-                    helm upgrade my-release ./infra/app \
+                    helm upgrade --install my-release ./infra/app \
                         --namespace ${K8S_NAMESPACE} \
                         --set image.repository=${IMAGE_NAME} \
-                        --set image.tag=latest 
+                        --set image.tag=${IMAGE_TAG}
                 """
             }
         }
@@ -152,5 +147,10 @@ pipeline {
             echo "Pipeline completed."
             cleanWs()
         }
+        failure {
+            echo "Pipeline failed. Check the logs for more details."
+            // Optionally, add notifications (e.g., email, Slack) here
+        }
     }
 }
+

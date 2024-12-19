@@ -6,9 +6,10 @@ metadata:
   chart: first-chart
 image:
   repository: "muneebshoukat/test" 
-  tag: "latest"
+  tag: "0.1.134"
   pullPolicy: IfNotPresent
-
+imagePullSecrets:
+  - name: dockerhub-secret
 service:
   name: nginx-svc
   labels: staging-svc
