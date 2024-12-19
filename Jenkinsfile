@@ -90,7 +90,7 @@ pipeline {
     environment {
         IMAGE_NAME    = "muneebshoukat/test"
         IMAGE_TAG     = "latest"  // Use the desired tag from DockerHub
-        K8S_NAMESPACE = "muneeb-finale"
+        K8S_NAMESPACE = "muneeb-f"
         KUBECONFIG    = credentials('1234')  // Jenkins credential ID for kubeconfig
     }
 
