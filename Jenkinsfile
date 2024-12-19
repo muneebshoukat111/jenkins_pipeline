@@ -6,8 +6,8 @@ pipeline {
     }
 
     environment {
-        IMAGE_NAME            = "muneebshoukat/test"
-        IMAGE_TAG             = "0.1.${BUILD_NUMBER}"
+        IMAGE_NAME            = "muneebshoukat/webapp"
+        IMAGE_TAG             = "dev-0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
         K8S_NAMESPACE         = "dev"
         KUBECONFIG            = credentials('1234')  // Jenkins credential ID for kubeconfig
@@ -67,7 +67,7 @@ pipeline {
                     helm upgrade my-release ./infra/app \
                         --namespace ${K8S_NAMESPACE} \
                         --set image.repository=${IMAGE_NAME} \
-                        --set image.tag=0.1.13
+                        --set image.tag=latest
                 """
             }
         }
