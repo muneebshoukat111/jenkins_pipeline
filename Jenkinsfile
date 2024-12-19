@@ -9,7 +9,7 @@ pipeline {
         IMAGE_NAME            = "muneebshoukat/test"
         IMAGE_TAG             = "0.1.${BUILD_NUMBER}"
         DOCKER_CREDENTIALS_ID = "e0185fe0-af38-4847-9e87-bed5e756348f"
-        K8S_NAMESPACE         = "muneeb-finale"
+        K8S_NAMESPACE         = "dev"
         KUBECONFIG            = credentials('1234')  // Jenkins credential ID for kubeconfig
     }
 
@@ -64,7 +64,7 @@ pipeline {
         stage('Deploy Helm Chart') {
             steps {
                 sh """
-                    helm upgrade my-release ./infra/app \
+                    helm install my-release ./infra/app \
                         --namespace ${K8S_NAMESPACE} \
                         --set image.repository=${IMAGE_NAME} \
                         --set image.tag=latest 
