@@ -1,12 +1,9 @@
 pipeline:
   agent: any  # Runs on any available agent
 
-  triggers:
-    - githubPush: {}  # Correct syntax for GitHub push trigger
-
   stages:
     - stage: "Clone Repository"
       steps:
         - git:
-            branch: "main"  # Specify the branch to clone
-            url: "https://github.com/muneebshoukat111/jenkins_pipeline.git"  # URL of your GitHub repository
+            branch: "main"
+            url: "https://github.com/muneebshoukat111/jenkins_pipeline.git"
