@@ -115,7 +115,7 @@ pipeline {
         stage('Create Namespace') {
             steps {
                 sh """
-                    kubectl create namespace ${K8S_NAMESPACE} || echo "Namespace ${K8S_NAMESPACE} already exists."
+                    kubectl create namespace ${K8S_NAMESPACE}
                 """
             }
         }
